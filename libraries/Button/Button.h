@@ -12,11 +12,16 @@
 class Button {
 public:
   Button(int pin);
+  void updateState();
+  int getClicks(int delay = 0);
   boolean isPressed(int duration = 0);
 
 private:
   int _pin;
   unsigned long _firstPressTime = 0;
+  unsigned long _lastReleaseTime = 0;
+  int _prevValue = HIGH;
+  int _clickCounter = 0;
 };
 
 #endif

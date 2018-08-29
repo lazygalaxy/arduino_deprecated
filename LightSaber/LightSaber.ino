@@ -2,7 +2,7 @@
    LightSaber.ino - Lightsaber implementation.
    Created by LazyGalaxy - Evangelos Papakonstantis, August 23, 2018.
    Released into the public domain.
- */
+*/
 
 #include <Button.h>
 #include <PiezoBuzzer.h>
@@ -12,24 +12,60 @@ Button button(12);
 PiezoBuzzer buzzer(8);
 RGB_LED led(11, 10, 9);
 
+// when we start we assume the lightsaber is off
 boolean lightSaberOn = false;
 
-void setup() {}
+void setup() { Serial.begin(9600); }
 
 void loop() {
-  if (button.isPressed(200)) {
-    lightSaberOn = !lightSaberOn;
+  button.updateState();
+  int clicks = button.getClicks(500);
+  // Serial.println(clicks);
 
-    if (lightSaberOn) {
-       led.setColor(random(255), random(255), random(255));
+  if (!lightSaberOn && clicks > 0) {
+    // when the lightsaber is off and there has been any clicks
+    // we set the led to a random color
+    led.setColor(random(255), random(255), random(255));
+    // update the lightSaberOn status
+    lightSaberOn = true;
+  } else if (lightSaberOn) {
+    playHum();
+    // when the light saber is on
+    switch (clicks) {
+    case 0:
+      while (lightSaberOn && button.isPressed(1000)) {
+        buzzer.stopNote();
+        // when there is a continuous button press
+        // change to another random color
+        led.setColor(random(255), random(255), random(255));
+        delay(1000);
+        // button state needs to be updated if we want to exit the while loop
+        button.updateState();
+      }
+      break;
+    case 1:
+      // when there is a single button click
+      // we switch off the led
+      led.off();
+      buzzer.stopNote();
+      // update the lightSaberOn status
+      lightSaberOn = false;
+      break;
+    case 2:
+      playMainTitleTheme(buzzer);
+      break;
+    case 3:
+      playTheImperialMarch(buzzer);
+      break;
     }
   }
+}
 
-  if (lightSaberOn) {
-    
-  } else {
-    led.off();
-  }
+void playHum() {
+  unsigned long time = millis();
+  int freq = (sin(time * 0.01) + 5) * 10;
+  Serial.println(freq);
+  buzzer.playNote(freq);
 }
 
 // https://circuits.io/circuits/1542469-music-with-arduino-star-wars-theme-song
