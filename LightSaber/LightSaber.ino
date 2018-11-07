@@ -1,6 +1,7 @@
 /*
    LightSaber.ino - Lightsaber implementation.
    Created by LazyGalaxy - Evangelos Papakonstantis, August 23, 2018.
+   Version - 1.0
    Released into the public domain.
 */
 
@@ -8,14 +9,18 @@
 #include <PiezoBuzzer.h>
 #include <RGB_LED.h>
 
-Button button(12);
-PiezoBuzzer buzzer(8);
+Button button(2);
+PiezoBuzzer buzzer(4);
 RGB_LED led(11, 10, 9);
 
 // when we start we assume the lightsaber is off
 boolean lightSaberOn = false;
 
-void setup() { Serial.begin(9600); }
+void setup() {
+  Serial.begin(9600);
+  pinMode(3, OUTPUT);
+  digitalWrite(3, 0);
+}
 
 void loop() {
   button.updateState();
@@ -28,6 +33,7 @@ void loop() {
     led.setColor(random(255), random(255), random(255));
     // update the lightSaberOn status
     lightSaberOn = true;
+    digitalWrite(3, 1);
   } else if (lightSaberOn) {
     playHum();
     // when the light saber is on
@@ -50,6 +56,7 @@ void loop() {
       buzzer.stopNote();
       // update the lightSaberOn status
       lightSaberOn = false;
+      digitalWrite(3, 0);
       break;
     case 2:
       playMainTitleTheme(buzzer);
@@ -85,55 +92,55 @@ void playMainTitleTheme(PiezoBuzzer buzzer) {
   buzzer.playNote(f, 250);
   buzzer.playNote(e, 250);
   buzzer.playNote(f, 250);
-  buzzer.playNoteAndStop(d, 1000, 500);
+  buzzer.playAndStopNote(d, 1000, 500);
 }
 
 // https://gist.github.com/nicksort/4736535
 void playTheImperialMarch(PiezoBuzzer buzzer) {
-  buzzer.playNoteAndStop(a, 500);
-  buzzer.playNoteAndStop(a, 500);
-  buzzer.playNoteAndStop(a, 500);
-  buzzer.playNoteAndStop(f, 350);
-  buzzer.playNoteAndStop(cH, 150);
-  buzzer.playNoteAndStop(a, 500);
-  buzzer.playNoteAndStop(f, 350);
-  buzzer.playNoteAndStop(cH, 150);
-  buzzer.playNoteAndStop(a, 650, 500);
+  buzzer.playAndStopNote(a, 500);
+  buzzer.playAndStopNote(a, 500);
+  buzzer.playAndStopNote(a, 500);
+  buzzer.playAndStopNote(f, 350);
+  buzzer.playAndStopNote(cH, 150);
+  buzzer.playAndStopNote(a, 500);
+  buzzer.playAndStopNote(f, 350);
+  buzzer.playAndStopNote(cH, 150);
+  buzzer.playAndStopNote(a, 650, 500);
 
-  buzzer.playNoteAndStop(eH, 500);
-  buzzer.playNoteAndStop(eH, 500);
-  buzzer.playNoteAndStop(eH, 500);
-  buzzer.playNoteAndStop(fH, 350);
-  buzzer.playNoteAndStop(cH, 150);
-  buzzer.playNoteAndStop(gS, 500);
-  buzzer.playNoteAndStop(f, 350);
-  buzzer.playNoteAndStop(cH, 150);
-  buzzer.playNoteAndStop(a, 650, 500);
+  buzzer.playAndStopNote(eH, 500);
+  buzzer.playAndStopNote(eH, 500);
+  buzzer.playAndStopNote(eH, 500);
+  buzzer.playAndStopNote(fH, 350);
+  buzzer.playAndStopNote(cH, 150);
+  buzzer.playAndStopNote(gS, 500);
+  buzzer.playAndStopNote(f, 350);
+  buzzer.playAndStopNote(cH, 150);
+  buzzer.playAndStopNote(a, 650, 500);
 
-  buzzer.playNoteAndStop(aH, 500);
-  buzzer.playNoteAndStop(a, 300);
-  buzzer.playNoteAndStop(a, 150);
-  buzzer.playNoteAndStop(aH, 500);
-  buzzer.playNoteAndStop(gSH, 325);
-  buzzer.playNoteAndStop(gH, 175);
-  buzzer.playNoteAndStop(fSH, 125);
-  buzzer.playNoteAndStop(fH, 125);
-  buzzer.playNoteAndStop(fSH, 250, 500);
+  buzzer.playAndStopNote(aH, 500);
+  buzzer.playAndStopNote(a, 300);
+  buzzer.playAndStopNote(a, 150);
+  buzzer.playAndStopNote(aH, 500);
+  buzzer.playAndStopNote(gSH, 325);
+  buzzer.playAndStopNote(gH, 175);
+  buzzer.playAndStopNote(fSH, 125);
+  buzzer.playAndStopNote(fH, 125);
+  buzzer.playAndStopNote(fSH, 250, 500);
 
-  buzzer.playNoteAndStop(aS, 250);
-  buzzer.playNoteAndStop(dSH, 500);
-  buzzer.playNoteAndStop(dH, 325);
-  buzzer.playNoteAndStop(cSH, 175);
-  buzzer.playNoteAndStop(cH, 125);
-  buzzer.playNoteAndStop(b, 125);
-  buzzer.playNoteAndStop(cH, 250, 500);
+  buzzer.playAndStopNote(aS, 250);
+  buzzer.playAndStopNote(dSH, 500);
+  buzzer.playAndStopNote(dH, 325);
+  buzzer.playAndStopNote(cSH, 175);
+  buzzer.playAndStopNote(cH, 125);
+  buzzer.playAndStopNote(b, 125);
+  buzzer.playAndStopNote(cH, 250, 500);
 
-  buzzer.playNoteAndStop(f, 250);
-  buzzer.playNoteAndStop(gS, 500);
-  buzzer.playNoteAndStop(f, 350);
-  buzzer.playNoteAndStop(a, 125);
-  buzzer.playNoteAndStop(cH, 500);
-  buzzer.playNoteAndStop(a, 375);
-  buzzer.playNoteAndStop(cH, 125);
-  buzzer.playNoteAndStop(eH, 650, 500);
+  buzzer.playAndStopNote(f, 250);
+  buzzer.playAndStopNote(gS, 500);
+  buzzer.playAndStopNote(f, 350);
+  buzzer.playAndStopNote(a, 125);
+  buzzer.playAndStopNote(cH, 500);
+  buzzer.playAndStopNote(a, 375);
+  buzzer.playAndStopNote(cH, 125);
+  buzzer.playAndStopNote(eH, 650, 500);
 }

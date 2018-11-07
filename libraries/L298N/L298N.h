@@ -1,5 +1,5 @@
 /*
-   L298N.h - Library for L298N Dual H-Bridge Motor Controller.
+   L298N.h - Library for L298N dual H-Bridge motor controller.
    Created by LazyGalaxy - Evangelos Papakonstantis, February 23, 2018.
    Released into the public domain.
  */

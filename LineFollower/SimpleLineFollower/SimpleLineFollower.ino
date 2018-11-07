@@ -14,11 +14,11 @@ HP_ASE_LIN rightSensor(1, 100);
 void setup() {}
 
 void loop() {
-  // if (leftSensor.isBlack()) {
-  motorController.turnLeft(255);
-  //} else if (rightSensor.isBlack()) {
-  //  motorController.turnRight(255);
-  //} else {
-  //  motorController.moveForward(255);
-  //}
+  if (leftSensor.isBlack()) {
+    motorController.turnLeft(255);
+  } else if (rightSensor.isBlack()) {
+    motorController.turnRight(255);
+  } else {
+    motorController.moveForward(255);
+  }
 }

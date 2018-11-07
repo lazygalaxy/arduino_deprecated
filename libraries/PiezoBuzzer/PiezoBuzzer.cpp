@@ -1,5 +1,5 @@
 /*
-   PiezoBuzzer.cpp - Library for Piezo Buzzer.
+   PiezoBuzzer.cpp - Library for Piezo Buzzer speaker.
    Created by LazyGalaxy - Evangelos Papakonstantis, August 23, 2018.
    Released into the public domain.
  */
@@ -22,7 +22,7 @@ void PiezoBuzzer::stopNote(int delayMicros) {
   delay(delayMicros);
 }
 
-void PiezoBuzzer::playNoteAndStop(int note, int noteDelayMicros,
+void PiezoBuzzer::playAndStopNote(int note, int noteDelayMicros,
                                   int stopDelayMicros) {
   playNote(note, noteDelayMicros);
   stopNote(stopDelayMicros);

@@ -1,5 +1,5 @@
 /*
-   HP_ASE_LIN.cpp - Library for HP-ASE-LIN Line Tracking Module.
+   HP_ASE_LIN.cpp - Library for HP-ASE-LIN line tracking module.
    Created by LazyGalaxy - Evangelos Papakonstantis, February 24, 2018.
    Released into the public domain.
  */

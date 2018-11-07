@@ -1,5 +1,5 @@
 /*
-   PiezoBuzzer.h - Library for Piezo Buzzer.
+   PiezoBuzzer.h - Library for Piezo Buzzer speaker.
    Created by LazyGalaxy - Evangelos Papakonstantis, August 23, 2018.
    Released into the public domain.
  */
@@ -34,7 +34,7 @@ public:
   PiezoBuzzer(int pin);
   void playNote(int note, int delayMicros = 0);
   void stopNote(int delayMicros = 0);
-  void PiezoBuzzer::playNoteAndStop(int note, int noteDelayMicros,
+  void PiezoBuzzer::playAndStopNote(int note, int noteDelayMicros,
                                     int stopDelayMicros = 50);
 
 private:

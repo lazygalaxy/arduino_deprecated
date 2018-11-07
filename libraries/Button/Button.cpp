@@ -1,5 +1,5 @@
 /*
-   Button.cpp - Library for Button.
+   Button.cpp - Library for a momentary button configured as a pullup.
    Created by LazyGalaxy - Evangelos Papakonstantis, August 24, 2018.
    Released into the public domain.
  */

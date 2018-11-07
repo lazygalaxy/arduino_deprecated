@@ -1,5 +1,5 @@
 /*
-   HC_SR04.h - Library for HC-SR04 Ultrasonic Sensor Module.
+   HC_SR04.h - Library for HC-SR04 ultrasonic sensor module.
    Created by LazyGalaxy - Evangelos Papakonstantis, March 25, 2018.
    Released into the public domain.
  */
