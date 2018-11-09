@@ -1,68 +1,57 @@
 /*
    LightSaber.ino - Lightsaber implementation.
    Created by LazyGalaxy - Evangelos Papakonstantis, August 23, 2018.
-   Version - 1.0
    Released into the public domain.
 */
 
 #include <Button.h>
+#include <NeoPixel.h>
 #include <PiezoBuzzer.h>
-#include <RGB_LED.h>
 
-Button button(2);
+const int LED_DELAY = 5;
+
+Button button(2,3);
 PiezoBuzzer buzzer(4);
-RGB_LED led(11, 10, 9);
-
-// when we start we assume the lightsaber is off
-boolean lightSaberOn = false;
+NeoPixel strip(5, 30);
 
 void setup() {
   Serial.begin(9600);
-  pinMode(3, OUTPUT);
-  digitalWrite(3, 0);
+  strip.setup();
 }
 
 void loop() {
-  button.updateState();
-  int clicks = button.getClicks(500);
-  // Serial.println(clicks);
+  int clicks = button.getClicks();
 
-  if (!lightSaberOn && clicks > 0) {
+  if (!button.isOn() && clicks > 0) {
     // when the lightsaber is off and there has been any clicks
-    // we set the led to a random color
-    led.setColor(random(255), random(255), random(255));
-    // update the lightSaberOn status
-    lightSaberOn = true;
-    digitalWrite(3, 1);
-  } else if (lightSaberOn) {
+    // we set the strip to a random color
+    strip.wipeSequence(random(255), random(255), random(255), LED_DELAY);
+    button.setOn(true);
+  } else if (button.isOn()) {
     playHum();
     // when the light saber is on
     switch (clicks) {
     case 0:
-      while (lightSaberOn && button.isPressed(1000)) {
+      while (button.isOn() && button.isLongPressed(1000)) {
         buzzer.stopNote();
         // when there is a continuous button press
         // change to another random color
-        led.setColor(random(255), random(255), random(255));
-        delay(1000);
-        // button state needs to be updated if we want to exit the while loop
-        button.updateState();
+        strip.noSequence(random(255), random(255), random(255));
+        delay(1500);
       }
       break;
     case 1:
-      // when there is a single button click
-      // we switch off the led
-      led.off();
+      // when there is a single button click we stop the sound switch the strip
+      // off
       buzzer.stopNote();
-      // update the lightSaberOn status
-      lightSaberOn = false;
-      digitalWrite(3, 0);
+      strip.wipeSequence(0, 0, 0, LED_DELAY, true);
+      button.setOn(false);
       break;
     case 2:
       playMainTitleTheme(buzzer);
       break;
     case 3:
-      playTheImperialMarch(buzzer);
+      playTheImperialMarch(buzzer,false);
       break;
     }
   }
@@ -96,7 +85,7 @@ void playMainTitleTheme(PiezoBuzzer buzzer) {
 }
 
 // https://gist.github.com/nicksort/4736535
-void playTheImperialMarch(PiezoBuzzer buzzer) {
+void playTheImperialMarch(PiezoBuzzer buzzer,bool longVersion) {
   buzzer.playAndStopNote(a, 500);
   buzzer.playAndStopNote(a, 500);
   buzzer.playAndStopNote(a, 500);
@@ -117,6 +106,7 @@ void playTheImperialMarch(PiezoBuzzer buzzer) {
   buzzer.playAndStopNote(cH, 150);
   buzzer.playAndStopNote(a, 650, 500);
 
+  if (longVersion) {
   buzzer.playAndStopNote(aH, 500);
   buzzer.playAndStopNote(a, 300);
   buzzer.playAndStopNote(a, 150);
@@ -143,4 +133,5 @@ void playTheImperialMarch(PiezoBuzzer buzzer) {
   buzzer.playAndStopNote(a, 375);
   buzzer.playAndStopNote(cH, 125);
   buzzer.playAndStopNote(eH, 650, 500);
+  }
 }

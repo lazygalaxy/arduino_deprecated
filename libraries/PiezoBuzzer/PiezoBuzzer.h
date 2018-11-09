@@ -31,14 +31,14 @@ const int aH = 880;
 
 class PiezoBuzzer {
 public:
-  PiezoBuzzer(int pin);
+  PiezoBuzzer(int digitalPin);
   void playNote(int note, int delayMicros = 0);
   void stopNote(int delayMicros = 0);
   void PiezoBuzzer::playAndStopNote(int note, int noteDelayMicros,
                                     int stopDelayMicros = 50);
 
 private:
-  int _pin;
+  int _digitalPin;
 };
 
 #endif

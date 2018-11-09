@@ -11,17 +11,22 @@
 
 class Button {
 public:
-  Button(int pin);
-  void updateState();
-  int getClicks(int delay = 0);
-  boolean isPressed(int duration = 0);
+  Button(int digitalClickPin, int digitalLEDPin = -1);
+  int getClicks(int delay = 150);
+  boolean isLongPressed(int duration);
+
+  bool isOn();
+  void setOn(bool buttonOn);
 
 private:
-  int _pin;
-  unsigned long _firstPressTime = 0;
-  unsigned long _lastReleaseTime = 0;
+  int _digitalClickPin = -1;
+  int _digitalLEDPin = -1;
+  unsigned long _pressTime = 0;
+  unsigned long _releaseTime = 0;
   int _prevValue = HIGH;
   int _clickCounter = 0;
+  boolean _buttonOn = false;
+  boolean _longPressed = false;
 };
 
 #endif

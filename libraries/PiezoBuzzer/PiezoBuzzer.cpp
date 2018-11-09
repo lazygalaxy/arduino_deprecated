@@ -6,19 +6,19 @@
 
 #include "PiezoBuzzer.h"
 
-PiezoBuzzer::PiezoBuzzer(int pin) {
-  _pin = pin;
+PiezoBuzzer::PiezoBuzzer(int digitalPin) {
+  _digitalPin = digitalPin;
 
-  pinMode(_pin, OUTPUT);
+  pinMode(_digitalPin, OUTPUT);
 }
 
 void PiezoBuzzer::playNote(int note, int delayMicros) {
-  tone(_pin, note);
+  tone(_digitalPin, note);
   delay(delayMicros);
 }
 
 void PiezoBuzzer::stopNote(int delayMicros) {
-  noTone(_pin);
+  noTone(_digitalPin);
   delay(delayMicros);
 }
 
