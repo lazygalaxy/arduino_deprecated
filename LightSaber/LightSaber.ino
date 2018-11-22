@@ -10,7 +10,7 @@
 
 const int LED_DELAY = 5;
 
-Button button(2,3);
+Button button(2, 3);
 PiezoBuzzer buzzer(4);
 NeoPixel strip(5, 30);
 
@@ -41,8 +41,7 @@ void loop() {
       }
       break;
     case 1:
-      // when there is a single button click we stop the sound switch the strip
-      // off
+      // single button click we stop the sound switch the strip off
       buzzer.stopNote();
       strip.wipeSequence(0, 0, 0, LED_DELAY, true);
       button.setOn(false);
@@ -51,7 +50,7 @@ void loop() {
       playMainTitleTheme(buzzer);
       break;
     case 3:
-      playTheImperialMarch(buzzer,false);
+      playTheImperialMarch(buzzer, false);
       break;
     }
   }
@@ -66,72 +65,24 @@ void playHum() {
 
 // https://circuits.io/circuits/1542469-music-with-arduino-star-wars-theme-song
 void playMainTitleTheme(PiezoBuzzer buzzer) {
-  buzzer.playNote(c, 1000);
-  buzzer.playNote(g, 1000);
-  buzzer.playNote(f, 250);
-  buzzer.playNote(e, 250);
-  buzzer.playNote(d, 250);
-  buzzer.playNote(cH, 1000);
-  buzzer.playNote(g, 500);
-  buzzer.playNote(f, 250);
-  buzzer.playNote(e, 250);
-  buzzer.playNote(d, 250);
-  buzzer.playNote(cH, 1000);
-  buzzer.playNote(g, 500);
-  buzzer.playNote(f, 250);
-  buzzer.playNote(e, 250);
-  buzzer.playNote(f, 250);
-  buzzer.playAndStopNote(d, 1000, 500);
+  int notes[] = {C4, G4, F4, E4, D4, C5, G4, F4, E4,
+                 D4, C5, G4, F4, E4, F4, D4, TE};
+  int beats[] = {8, 8, 2, 2, 2, 8, 4, 2, 2, 2, 8, 4, 2, 2, 2, 4};
+  int tempo = 100;
+
+  buzzer.playSequence(notes, beats, tempo);
 }
 
 // https://gist.github.com/nicksort/4736535
-void playTheImperialMarch(PiezoBuzzer buzzer,bool longVersion) {
-  buzzer.playAndStopNote(a, 500);
-  buzzer.playAndStopNote(a, 500);
-  buzzer.playAndStopNote(a, 500);
-  buzzer.playAndStopNote(f, 350);
-  buzzer.playAndStopNote(cH, 150);
-  buzzer.playAndStopNote(a, 500);
-  buzzer.playAndStopNote(f, 350);
-  buzzer.playAndStopNote(cH, 150);
-  buzzer.playAndStopNote(a, 650, 500);
+void playTheImperialMarch(PiezoBuzzer buzzer, bool longVersion) {
+  int notes[] = {A4,  A4, A4,  F4,  C5,  A4, F4,  C5,  A4, NT,  E5, E5,
+                 E5,  F5, C5,  GS4, F4,  C5, A4,  NT,  A5, A4,  A4, A5,
+                 GS5, G5, FS5, F5,  FS5, NT, AS4, DS5, D5, CS5, C5, AS4,
+                 C5,  NT, F4,  GS4, F4,  A4, C5,  A4,  C5, E5,  TE};
+  int beats[] = {4, 4, 4, 3, 1, 4, 3, 1, 5, 4, 4, 4, 4, 3, 1, 4,
+                 3, 1, 5, 4, 4, 3, 1, 4, 3, 1, 1, 1, 2, 4, 2, 4,
+                 3, 1, 1, 1, 2, 4, 2, 4, 3, 1, 4, 3, 1, 5};
+  int tempo = 125;
 
-  buzzer.playAndStopNote(eH, 500);
-  buzzer.playAndStopNote(eH, 500);
-  buzzer.playAndStopNote(eH, 500);
-  buzzer.playAndStopNote(fH, 350);
-  buzzer.playAndStopNote(cH, 150);
-  buzzer.playAndStopNote(gS, 500);
-  buzzer.playAndStopNote(f, 350);
-  buzzer.playAndStopNote(cH, 150);
-  buzzer.playAndStopNote(a, 650, 500);
-
-  if (longVersion) {
-  buzzer.playAndStopNote(aH, 500);
-  buzzer.playAndStopNote(a, 300);
-  buzzer.playAndStopNote(a, 150);
-  buzzer.playAndStopNote(aH, 500);
-  buzzer.playAndStopNote(gSH, 325);
-  buzzer.playAndStopNote(gH, 175);
-  buzzer.playAndStopNote(fSH, 125);
-  buzzer.playAndStopNote(fH, 125);
-  buzzer.playAndStopNote(fSH, 250, 500);
-
-  buzzer.playAndStopNote(aS, 250);
-  buzzer.playAndStopNote(dSH, 500);
-  buzzer.playAndStopNote(dH, 325);
-  buzzer.playAndStopNote(cSH, 175);
-  buzzer.playAndStopNote(cH, 125);
-  buzzer.playAndStopNote(b, 125);
-  buzzer.playAndStopNote(cH, 250, 500);
-
-  buzzer.playAndStopNote(f, 250);
-  buzzer.playAndStopNote(gS, 500);
-  buzzer.playAndStopNote(f, 350);
-  buzzer.playAndStopNote(a, 125);
-  buzzer.playAndStopNote(cH, 500);
-  buzzer.playAndStopNote(a, 375);
-  buzzer.playAndStopNote(cH, 125);
-  buzzer.playAndStopNote(eH, 650, 500);
-  }
+  buzzer.playSequence(notes, beats, tempo);
 }

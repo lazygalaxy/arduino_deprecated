@@ -55,8 +55,7 @@ boolean Button::isLongPressed(int duration) {
   int value = digitalRead(_digitalClickPin);
   if (value == LOW) {
     unsigned long time = millis();
-    _longPressed = (_clickCounter == 0 && _pressTime != 0 &&
-                    (time - _pressTime) >= duration);
+    _longPressed = (_pressTime != 0 && (time - _pressTime) >= duration);
     return _longPressed;
   }
   return false;
