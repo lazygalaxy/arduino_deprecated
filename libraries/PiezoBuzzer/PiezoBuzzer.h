@@ -8,37 +8,120 @@
 #define PiezoBuzzer_h
 
 #include "Arduino.h"
+#include "Song.h"
 
-const int c = 261;
-const int d = 294;
-const int e = 329;
-const int f = 349;
-const int g = 391;
-const int gS = 415;
-const int a = 440;
-const int aS = 455;
-const int b = 466;
-const int cH = 523;
-const int cSH = 554;
-const int dH = 587;
-const int dSH = 622;
-const int eH = 659;
-const int fH = 698;
-const int fSH = 740;
-const int gH = 784;
-const int gSH = 830;
-const int aH = 880;
+#define NT -1 // no tone
+#define TE 0  // no tone
+#define B0 31
+#define C1 33
+#define CS1 35
+#define D1 37
+#define DS1 39
+#define E1 41
+#define F1 44
+#define FS1 46
+#define G1 49
+#define GS1 52
+#define A1 55
+#define AS1 58
+#define B1 62
+#define C2 65
+#define CS2 69
+#define D2 73
+#define DS2 78
+#define E2 82
+#define F2 87
+#define FS2 93
+#define G2 98
+#define GS2 104
+#define A2 110
+#define AS2 117
+#define B2 123
+#define C3 131
+#define CS3 139
+#define D3 147
+#define DS3 156
+#define E3 165
+#define F3 175
+#define FS3 185
+#define G3 196
+#define GS3 208
+#define A3 220
+#define AS3 233
+#define B3 247
+#define C4 262
+#define CS4 277
+#define D4 294
+#define DS4 311
+#define E4 330
+#define F4 349
+#define FS4 370
+#define G4 392
+#define GS4 415
+#define A4 440
+#define AS4 466
+#define B4 494
+#define C5 523
+#define CS5 554
+#define D5 587
+#define DS5 622
+#define E5 659
+#define F5 698
+#define FS5 740
+#define G5 784
+#define GS5 831
+#define A5 880
+#define AS5 932
+#define B5 988
+#define C6 1047
+#define CS6 1109
+#define D6 1175
+#define DS6 1245
+#define E6 1319
+#define F6 1397
+#define FS6 1480
+#define G6 1568
+#define GS6 1661
+#define A6 1760
+#define AS6 1865
+#define B6 1976
+#define C7 2093
+#define CS7 2217
+#define D7 2349
+#define DS7 2489
+#define E7 2637
+#define F7 2794
+#define FS7 2960
+#define G7 3136
+#define GS7 3322
+#define A7 3520
+#define AS7 3729
+#define B7 3951
+#define C8 4186
+#define CS8 4435
+#define D8 4699
+#define DS8 4978
 
 class PiezoBuzzer {
 public:
   PiezoBuzzer(int digitalPin);
   void playNote(int note, int delayMicros = 0);
   void stopNote(int delayMicros = 0);
-  void PiezoBuzzer::playAndStopNote(int note, int noteDelayMicros,
-                                    int stopDelayMicros = 50);
+  void playAndStopNote(int note, int noteDelayMicros, int stopDelayMicros = 50);
+  void playSequence(int notes[], int beats[], int tempo);
+  void playSong(Song song);
+
+  void setSong(Song song);
+  void playSong();
+  void stopSong();
 
 private:
   int _digitalPin;
+  bool _isTonePlaying = false;
+
+  Song *_song = nullptr;
+  int _songToneIndex;
+  unsigned long _songToneTimeEnd;
 };
 
 #endif
