@@ -10,7 +10,7 @@ PiezoBuzzer::PiezoBuzzer(int digitalPin) {
   _digitalPin = digitalPin;
   pinMode(_digitalPin, OUTPUT);
 
-  stopSong();
+  stopMelody();
 }
 
 void PiezoBuzzer::playNote(int note, int delayMicros) {
@@ -31,10 +31,10 @@ void PiezoBuzzer::playAndStopNote(int note, int noteDelayMicros,
   stopNote(stopDelayMicros);
 }
 
-void PiezoBuzzer::playSong(Song song) {
-  int *notes = song.getNotes();
-  int *beats = song.getBeats();
-  int tempo = song.getTempo();
+void PiezoBuzzer::playMelody(Melody melody) {
+  int *notes = melody.getNotes();
+  int *beats = melody.getBeats();
+  int tempo = melody.getTempo();
 
   // repeat until there are actual notes and beats in the array
   for (int i = 0; notes[i]; i++) {
@@ -53,38 +53,42 @@ void PiezoBuzzer::playSong(Song song) {
   }
 }
 
-void PiezoBuzzer::stopSong() {
+void PiezoBuzzer::stopMelody() {
   stopNote();
-  _songToneIndex = -1;
-  _songToneTimeEnd = 0;
+  _toneIndex = -1;
+  _toneTimeEnd = 0;
 }
 
-void PiezoBuzzer::setSong(Song song) {
-  _song = &song;
-  _songToneIndex = 0;
-  _songToneTimeEnd = millis();
+void PiezoBuzzer::setMelody(Melody melody) {
+  _melody = &melody;
+  _toneIndex = 0;
+  _toneTimeEnd = millis();
 }
 
-void PiezoBuzzer::playSong() {
-  // a positive index indicates we have a song to play
-  if (_songToneIndex >= 0) {
+void PiezoBuzzer::playMelody(void (*_playCallback)(int),
+                             void (*_stopCallback)(void)) {
+  // a positive index indicates we have a melody to play
+  if (_toneIndex >= 0) {
     unsigned long currentTime = millis();
-    if (currentTime >= _songToneTimeEnd) {
-      if (_song->getNotes()[_songToneIndex]) {
-        // if we playing a note and the next note is identical
-        if (_isTonePlaying && (_song->getNotes()[_songToneIndex] ==
-                               _song->getNotes()[_songToneIndex - 1])) {
+    if (currentTime >= _toneTimeEnd) {
+      if (_melody->getNotes()[_toneIndex]) {
+        // if the previous note we are playing is not identical to the next one
+        if (_isTonePlaying && _toneIndex > 0 &&
+            (_melody->getNotes()[_toneIndex - 1] ==
+             _melody->getNotes()[_toneIndex])) {
           // stop the note for 50 millis
           stopNote();
-          _songToneTimeEnd = currentTime + 50;
+          _toneTimeEnd = currentTime + 50;
           return;
         }
-        playNote(_song->getNotes()[_songToneIndex]);
-        _songToneTimeEnd = currentTime + (_song->getBeats()[_songToneIndex] *
-                                          _song->getTempo());
-        _songToneIndex++;
+        playNote(_melody->getNotes()[_toneIndex]);
+        _toneTimeEnd = currentTime +
+                       (_melody->getBeats()[_toneIndex] * _melody->getTempo());
+        _playCallback(_toneIndex);
+        _toneIndex++;
       } else {
-        stopSong();
+        stopMelody();
+        _stopCallback();
       }
     }
   }

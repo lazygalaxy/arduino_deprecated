@@ -10,9 +10,23 @@
 
 const int LED_DELAY = 5;
 
-Button button(2, 3);
-PiezoBuzzer buzzer(4);
-NeoPixel strip(5, 30);
+const Melody mainThemeMelody(
+    (int[]){C4, G4, F4, E4, D4, C5, G4, F4, E4, D4, C5, G4, F4, E4, F4, D4, TE},
+    (int[]){8, 8, 2, 2, 2, 8, 4, 2, 2, 2, 8, 4, 2, 2, 2, 4}, 100);
+
+const Melody imperialMarchMelody(
+    (int[]){A4,  A4, A4,  F4,  C5,  A4, F4,  C5,  A4, NT,  E5, E5,
+            E5,  F5, C5,  GS4, F4,  C5, A4,  NT,  A5, A4,  A4, A5,
+            GS5, G5, FS5, F5,  FS5, NT, AS4, DS5, D5, CS5, C5, AS4,
+            C5,  NT, F4,  GS4, F4,  A4, C5,  A4,  C5, E5,  TE},
+    (int[]){4, 4, 4, 3, 1, 4, 3, 1, 5, 4, 4, 4, 4, 3, 1, 4,
+            3, 1, 5, 4, 4, 3, 1, 4, 3, 1, 1, 1, 2, 4, 2, 4,
+            3, 1, 1, 1, 2, 4, 2, 4, 3, 1, 4, 3, 1, 5},
+    125);
+
+const Button button(2, 3);
+const PiezoBuzzer buzzer(4);
+const NeoPixel strip(5, 30);
 
 void setup() {
   Serial.begin(9600);
@@ -47,10 +61,10 @@ void loop() {
       button.setOn(false);
       break;
     case 2:
-      playMainTitleTheme(buzzer);
+      buzzer.playMelody(mainThemeMelody);
       break;
     case 3:
-      playTheImperialMarch(buzzer, false);
+      buzzer.playMelody(imperialMarchMelody);
       break;
     }
   }
@@ -61,28 +75,4 @@ void playHum() {
   int freq = (sin(time * 0.01) + 5) * 10;
   Serial.println(freq);
   buzzer.playNote(freq);
-}
-
-// https://circuits.io/circuits/1542469-music-with-arduino-star-wars-theme-song
-void playMainTitleTheme(PiezoBuzzer buzzer) {
-  int notes[] = {C4, G4, F4, E4, D4, C5, G4, F4, E4,
-                 D4, C5, G4, F4, E4, F4, D4, TE};
-  int beats[] = {8, 8, 2, 2, 2, 8, 4, 2, 2, 2, 8, 4, 2, 2, 2, 4};
-  int tempo = 100;
-
-  buzzer.playSequence(notes, beats, tempo);
-}
-
-// https://gist.github.com/nicksort/4736535
-void playTheImperialMarch(PiezoBuzzer buzzer, bool longVersion) {
-  int notes[] = {A4,  A4, A4,  F4,  C5,  A4, F4,  C5,  A4, NT,  E5, E5,
-                 E5,  F5, C5,  GS4, F4,  C5, A4,  NT,  A5, A4,  A4, A5,
-                 GS5, G5, FS5, F5,  FS5, NT, AS4, DS5, D5, CS5, C5, AS4,
-                 C5,  NT, F4,  GS4, F4,  A4, C5,  A4,  C5, E5,  TE};
-  int beats[] = {4, 4, 4, 3, 1, 4, 3, 1, 5, 4, 4, 4, 4, 3, 1, 4,
-                 3, 1, 5, 4, 4, 3, 1, 4, 3, 1, 1, 1, 2, 4, 2, 4,
-                 3, 1, 1, 1, 2, 4, 2, 4, 3, 1, 4, 3, 1, 5};
-  int tempo = 125;
-
-  buzzer.playSequence(notes, beats, tempo);
 }

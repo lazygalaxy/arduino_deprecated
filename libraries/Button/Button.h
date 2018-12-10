@@ -12,7 +12,7 @@
 class Button {
 public:
   Button(int digitalClickPin, int digitalLEDPin = -1);
-  int getClicks(int delay = 150);
+  int getClicks(int delay = 200);
   boolean isLongPressed(int duration);
 
   bool isOn();

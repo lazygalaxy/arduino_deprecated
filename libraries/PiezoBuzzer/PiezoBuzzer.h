@@ -8,7 +8,7 @@
 #define PiezoBuzzer_h
 
 #include "Arduino.h"
-#include "Song.h"
+#include "Melody.h"
 
 #define NT -1 // no tone
 #define TE 0  // no tone
@@ -109,19 +109,19 @@ public:
   void stopNote(int delayMicros = 0);
   void playAndStopNote(int note, int noteDelayMicros, int stopDelayMicros = 50);
   void playSequence(int notes[], int beats[], int tempo);
-  void playSong(Song song);
+  void playMelody(Melody melody);
 
-  void setSong(Song song);
-  void playSong();
-  void stopSong();
+  void setMelody(Melody melody);
+  void playMelody(void (*_playCallback)(int), void (*_stopCallback)(void));
+  void stopMelody();
 
 private:
   int _digitalPin;
   bool _isTonePlaying = false;
 
-  Song *_song = nullptr;
-  int _songToneIndex;
-  unsigned long _songToneTimeEnd;
+  Melody *_melody = nullptr;
+  int _toneIndex;
+  unsigned long _toneTimeEnd;
 };
 
 #endif

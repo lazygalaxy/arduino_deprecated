@@ -1,17 +1,17 @@
 /*
-Song.h - Library to represent a song.
+Melody.h - Library to represent a melody.
 Created by LazyGalaxy - Evangelos Papakonstantis, November 20, 2018.
 Released into the public domain.
  */
 
-#ifndef Song_h
-#define Song_h
+#ifndef Melody_h
+#define Melody_h
 
 #include "Arduino.h"
 
-class Song {
+class Melody {
 public:
-  Song(int notes[], int beats[], int tempo);
+  Melody(int notes[], int beats[], int tempo);
   int *getNotes();
   int *getBeats();
   int getTempo();
