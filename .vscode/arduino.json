@@ -1,0 +1,5 @@
+{
+    "board": "arduino:avr:uno",
+    "sketch": "projects/PimpMyRide/PimpMyRide.ino",
+    "port": "/dev/cu.usbmodem1421"
+}

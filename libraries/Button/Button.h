@@ -10,7 +10,7 @@
 #include "Arduino.h"
 
 class Button {
-public:
+ public:
   Button(int digitalClickPin, int digitalLEDPin = -1);
   int getClicks(int delay = 200);
   boolean isLongPressed(int duration);
@@ -18,7 +18,7 @@ public:
   bool isOn();
   void setOn(bool buttonOn);
 
-private:
+ private:
   int _digitalClickPin = -1;
   int _digitalLEDPin = -1;
   unsigned long _pressTime = 0;
