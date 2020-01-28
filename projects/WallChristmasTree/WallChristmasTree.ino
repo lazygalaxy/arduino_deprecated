@@ -1,6 +1,7 @@
 /*
    WallChristmasTree.ino - Wall christmas tree implementation.
    Created by LazyGalaxy - Evangelos Papakonstantis, November 17, 2018.
+   Ver 2.0 - November 25, 2019
    Released into the public domain.
 */
 
@@ -36,16 +37,6 @@ const Melody merryChristmasMelody(
     (int[]){4, 4, 2, 2, 2, 2, 4, 4, 4, 4, 2, 2, 2, 2, 4,
             4, 4, 4, 2, 2, 2, 2, 4, 4, 2, 2, 4, 4, 4, 8},
     100);
-
-const Melody imperialMarchMelody(
-    (int[]){A4,  A4, A4,  F4,  C5,  A4, F4,  C5,  A4, NT,  E5, E5,
-            E5,  F5, C5,  GS4, F4,  C5, A4,  NT,  A5, A4,  A4, A5,
-            GS5, G5, FS5, F5,  FS5, NT, AS4, DS5, D5, CS5, C5, AS4,
-            C5,  NT, F4,  GS4, F4,  A4, C5,  A4,  C5, E5,  TE},
-    (int[]){4, 4, 4, 3, 1, 4, 3, 1, 5, 4, 4, 4, 4, 3, 1, 4,
-            3, 1, 5, 4, 4, 3, 1, 4, 3, 1, 1, 1, 2, 4, 2, 4,
-            3, 1, 1, 1, 2, 4, 2, 4, 3, 1, 4, 3, 1, 5},
-    125);
 
 void setup() {
   Serial.begin(9600);
@@ -86,10 +77,11 @@ void loop() {
     button2.setOn(false);
     button3.setOn(false);
     button4.setOn(true);
-    buzzer.setMelody(imperialMarchMelody);
   }
 
-  buzzer.playMelody(playRandomCallback, stopCallback);
+  if (button1.isOn() || button2.isOn() || button3.isOn()) {
+    buzzer.playMelody(playRandomCallback, stopCallback);
+  }
 }
 
 void playRandomCallback(int counter) {
@@ -101,5 +93,4 @@ void stopCallback() {
   button1.setOn(false);
   button2.setOn(false);
   button3.setOn(false);
-  button4.setOn(false);
 }

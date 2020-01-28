@@ -3,6 +3,8 @@
         {
             "name": "Mac",
             "includePath": [
+                "/Users/vangos/Library/Arduino15/packages/esp8266/tools/**",
+                "/Users/vangos/Library/Arduino15/packages/esp8266/hardware/esp8266/2.6.1/**",
                 "/Users/vangos/Applications/Arduino.app/Contents/Java/tools/**",
                 "/Users/vangos/Applications/Arduino.app/Contents/Java/hardware/arduino/avr/**"
             ],
