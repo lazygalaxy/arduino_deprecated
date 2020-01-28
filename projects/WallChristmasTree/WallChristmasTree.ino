@@ -14,7 +14,7 @@ const Button button1(2, 3);
 const Button button2(4, 5);
 const Button button3(6, 7);
 const Button button4(8, 9);
-const NeoPixel strip(10, 123);
+const NeoPixel strip(10, 35);
 const PiezoBuzzer buzzer(11);
 
 const Melody santaClausMelody((int[]){G4, E4, F4, G4, G4, G4, A4, B4, C5, C5,
@@ -73,6 +73,7 @@ void loop() {
 
   int clicks4 = button4.getClicks();
   if (!button4.isOn() && clicks4 > 0) {
+    buzzer.stopMelody();
     button1.setOn(false);
     button2.setOn(false);
     button3.setOn(false);
@@ -93,4 +94,5 @@ void stopCallback() {
   button1.setOn(false);
   button2.setOn(false);
   button3.setOn(false);
+  button4.setOn(false);
 }
