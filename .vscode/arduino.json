@@ -1,7 +1,7 @@
 {
     "board": "arduino:avr:nano",
-    "sketch": "projects/WallChristmasTree/WallChristmasTree.ino",
-    "port": "/dev/cu.wchusbserial1410",
     "configuration": "cpu=atmega328",
+    "sketch": "lessons/1_Light/1_1_LED/1_1_LED.ino",
+    "port": "/dev/cu.wchusbserial1420",
     "programmer": "AVR ISP"
 }
