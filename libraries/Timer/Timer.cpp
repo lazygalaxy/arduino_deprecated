@@ -9,28 +9,44 @@
 Timer::Timer() {}
 
 void Timer::schedule(unsigned int delay, funcPtr callback) {
-  TimerTask task(delay + millis(), callback);
-  for (int i = 0; i < TASK_SIZE; i++) {
-    if (tasks[i] == NULL) {
-      tasks[i] = &task;
-      Serial.println(String(tasks[i]->time) + " " + String(i));
-      break;
-    }
+  TimerTask *task = new TimerTask(delay + millis(), callback);
+  if (head == NULL) {
+    head = task;
+    tail = task;
+  } else {
+    tail->next = task;
+    tail = task;
   }
 }
 
 void Timer::update() {
-  Serial.println(String(tasks[0]->time));
-  Serial.println(String(tasks[1]->time));
   unsigned long time = millis();
-  for (int i = 0; i < TASK_SIZE; i++) {
-    if (tasks[i] != NULL) {
-      // Serial.println(String(tasks[i]->time) + " " + String(i));
-      if (tasks[i]->time <= time) {
-        Serial.println("Trigger!");
-        tasks[i]->callback();
-        tasks[i] = NULL;
+
+  TimerTask *current = head;
+  TimerTask *previous = NULL;
+  while (current != NULL) {
+    Serial.println(String(current->time) + " " + String(time));
+    if (current->time <= time) {
+      current->callback();
+      Serial.println("Trigger");
+      TimerTask *temp = current;
+      if (previous == NULL) {
+        head = head->next;
+        if (head == NULL) {
+          tail = NULL;
+        }
+        current = current->next;
+      } else {
+        previous->next = current->next;
+        if (current->next == NULL) {
+          tail = current;
+        }
+        current = current->next;
       }
+      delete temp;
+    } else {
+      previous = current;
+      current = current->next;
     }
   }
 }

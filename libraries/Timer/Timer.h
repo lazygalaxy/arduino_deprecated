@@ -9,29 +9,29 @@
 
 #include "Arduino.h"
 
-#define TASK_SIZE 5
-
 class Timer {
  public:
-  Timer();
+  typedef void (*funcPtr)(void);
 
-  void schedule(unsigned int delay, void (*taskCallback)(void));
+  Timer();
+  void schedule(unsigned int delay, funcPtr callback);
   void update();
 
  private:
-  typedef void (*funcPtr)(void);
-
   struct TimerTask {
     TimerTask(unsigned long time, funcPtr callback) {
       this->time = time;
       this->callback = callback;
+      this->next = NULL;
     }
 
     unsigned long time;
     funcPtr callback;
+    TimerTask* next;
   };
 
-  TimerTask** tasks[TASK_SIZE] = {NULL};
+  TimerTask* head = NULL;
+  TimerTask* tail = NULL;
 };
 
 #endif

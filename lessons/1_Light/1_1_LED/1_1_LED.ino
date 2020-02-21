@@ -15,8 +15,8 @@ void setup() {
   Serial.begin(9600);
   led1.setLightOn(true);
   led2.setBlinkOn(true);
-  timer.schedule(2000, swap);
-  timer.schedule(4000, stop);
+  timer.schedule(3000, swap);
+  timer.schedule(6000, stop);
 }
 
 void loop() {
