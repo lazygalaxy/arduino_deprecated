@@ -25,10 +25,8 @@ void Timer::update() {
   TimerTask *current = head;
   TimerTask *previous = NULL;
   while (current != NULL) {
-    Serial.println(String(current->time) + " " + String(time));
     if (current->time <= time) {
       current->callback();
-      Serial.println("Trigger");
       TimerTask *temp = current;
       if (previous == NULL) {
         head = head->next;
