@@ -5,24 +5,22 @@
  */
 
 #include <LED.h>
-#include <Timer.h>
+#include <LazyGalaxy.h>
 
 LED led1(3);
 LED led2(5);
-Timer timer;
 
 void setup() {
-  Serial.begin(9600);
   led1.setLightOn(true);
   led2.setBlinkOn(true);
-  timer.schedule(3000, swap);
-  timer.schedule(6000, stop);
+  scheduleTask(3000, swap);
+  scheduleTask(6000, stop);
 }
 
 void loop() {
   led1.update();
   led2.update();
-  timer.update();
+  update();
 }
 
 void swap() {

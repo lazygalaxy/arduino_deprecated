@@ -7,15 +7,15 @@
 #ifndef Timer_h
 #define Timer_h
 
-#include "Arduino.h"
+#include <stddef.h>
+
+typedef void (*funcPtr)(void);
 
 class Timer {
  public:
-  typedef void (*funcPtr)(void);
-
   Timer();
-  void schedule(unsigned int delay, funcPtr callback);
-  void update();
+  void schedule(unsigned long time, funcPtr callback);
+  void update(unsigned long time);
 
  private:
   struct TimerTask {

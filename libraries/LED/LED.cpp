@@ -4,7 +4,7 @@
    Released into the public domain.
  */
 
-#include "LED.h"
+#include <LED.h>
 
 LED::LED(unsigned char pin) {
   _pin = pin;

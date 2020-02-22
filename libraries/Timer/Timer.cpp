@@ -4,12 +4,12 @@
    Released into the public domain.
  */
 
-#include "Timer.h"
+#include <Timer.h>
 
 Timer::Timer() {}
 
-void Timer::schedule(unsigned int delay, funcPtr callback) {
-  TimerTask *task = new TimerTask(delay + millis(), callback);
+void Timer::schedule(unsigned long time, funcPtr callback) {
+  TimerTask *task = new TimerTask(time, callback);
   if (head == NULL) {
     head = task;
     tail = task;
@@ -19,9 +19,7 @@ void Timer::schedule(unsigned int delay, funcPtr callback) {
   }
 }
 
-void Timer::update() {
-  unsigned long time = millis();
-
+void Timer::update(unsigned long time) {
   TimerTask *current = head;
   TimerTask *previous = NULL;
   while (current != NULL) {
