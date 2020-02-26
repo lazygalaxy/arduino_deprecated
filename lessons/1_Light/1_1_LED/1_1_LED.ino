@@ -5,23 +5,19 @@
  */
 
 #include <LED.h>
-#include <LazyGalaxy.h>
 
 LED led1(3);
 LED led2(5);
 
 void setup() {
+  Serial.begin(9600);
   led1.setLightOn(true);
   led2.setBlinkOn(true);
   scheduleTask(3000, swap);
   scheduleTask(6000, stop);
 }
 
-void loop() {
-  led1.update();
-  led2.update();
-  update();
-}
+void loop() { update(); }
 
 void swap() {
   stop();

@@ -8,8 +8,17 @@
 
 Timer::Timer() {}
 
-void Timer::schedule(unsigned long time, funcPtr callback) {
-  TimerTask *task = new TimerTask(time, callback);
+void Timer::schedule(unsigned long triggerTime, funcPtr callback) {
+  TimerTask *task = new TimerTask(triggerTime, callback);
+  addTask(task);
+}
+
+void Timer::schedule(unsigned long triggerTime, Component *component) {
+  TimerTask *task = new TimerTask(triggerTime, component);
+  addTask(task);
+}
+
+void Timer::addTask(TimerTask *task) {
   if (head == NULL) {
     head = task;
     tail = task;
@@ -23,8 +32,13 @@ void Timer::update(unsigned long time) {
   TimerTask *current = head;
   TimerTask *previous = NULL;
   while (current != NULL) {
-    if (current->time <= time) {
-      current->callback();
+    Serial.println(String(current->triggerTime) + " " + String(time));
+    if (current->triggerTime <= time) {
+      if (current->callback != NULL) {
+        current->callback();
+      } else if (current->component != NULL) {
+        current->component->update(time);
+      }
       TimerTask *temp = current;
       if (previous == NULL) {
         head = head->next;

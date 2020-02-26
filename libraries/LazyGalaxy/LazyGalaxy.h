@@ -8,16 +8,19 @@
 #define LazyGalaxy_h
 
 #include <Arduino.h>
+#include <Component.h>
 #include <Timer.h>
 
 typedef void (*funcPtr)(void);
 
-static Timer* timer = new Timer();
-
-static void update() { timer->update(millis()); }
+static void update() { Timer::getInstance()->update(millis()); }
 
 static void scheduleTask(unsigned int delay, funcPtr callback) {
-  timer->schedule(delay + millis(), callback);
+  Timer::getInstance()->schedule(delay + millis(), callback);
+}
+
+static void scheduleTask(unsigned long triggerTime, Component* component) {
+  Timer::getInstance()->schedule(triggerTime, component);
 }
 
 #endif

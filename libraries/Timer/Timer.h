@@ -7,29 +7,45 @@
 #ifndef Timer_h
 #define Timer_h
 
-#include <stddef.h>
+#include <Arduino.h>
+#include <Component.h>
 
 typedef void (*funcPtr)(void);
 
 class Timer {
  public:
-  Timer();
-  void schedule(unsigned long time, funcPtr callback);
+  static Timer* getInstance() {
+    static Timer* instance = new Timer();
+    return instance;
+  }
+  void schedule(unsigned long triggerTime, funcPtr callback);
+  void schedule(unsigned long triggerTime, Component* component);
   void update(unsigned long time);
 
  private:
+  Timer();
   struct TimerTask {
-    TimerTask(unsigned long time, funcPtr callback) {
-      this->time = time;
+    TimerTask(unsigned long triggerTime, funcPtr callback) {
+      this->triggerTime = triggerTime;
       this->callback = callback;
+      this->component = NULL;
       this->next = NULL;
     }
 
-    unsigned long time;
+    TimerTask(unsigned long triggerTime, Component* component) {
+      this->triggerTime = triggerTime;
+      this->callback = NULL;
+      this->component = component;
+      this->next = NULL;
+    }
+
+    unsigned long triggerTime;
     funcPtr callback;
+    Component* component;
     TimerTask* next;
   };
 
+  void addTask(TimerTask* task);
   TimerTask* head = NULL;
   TimerTask* tail = NULL;
 };

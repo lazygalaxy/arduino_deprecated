@@ -26,30 +26,27 @@ void LED::setBlinkOn(bool flag, unsigned int onDelay = 500,
                      unsigned int offDelay = 500) {
   if (flag && !isBlinkOn()) {
     // we would like to start the blink
-    setLightOn(true);
     _onDelay = onDelay;
     _offDelay = offDelay;
-    _time = millis();
+    LED::update(millis());
   } else if (!flag && isBlinkOn()) {
     // we would like to stop the blink
-    setLightOn(false);
     _onDelay = 0;
     _offDelay = 0;
+    setLightOn(false);
   }
 }
 
-bool LED::isBlinkOn() { return _onDelay > 0 && _offDelay; }
+bool LED::isBlinkOn() { return _onDelay > 0 && _offDelay > 0; }
 
-void LED::update() {
+void LED::update(unsigned long time) {
   if (isBlinkOn()) {
-    // update the blink
-    unsigned long time = millis();
-    if (isLightOn() && time >= _time + _onDelay) {
+    if (isLightOn()) {
       setLightOn(false);
-      _time = time;
-    } else if (!isLightOn() && time >= _time + _offDelay) {
+      scheduleTask(_offDelay + time, this);
+    } else {
       setLightOn(true);
-      _time = time;
+      scheduleTask(_onDelay + time, this);
     }
   }
 }
