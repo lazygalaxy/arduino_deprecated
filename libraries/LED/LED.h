@@ -9,19 +9,20 @@
 
 #include <Component.h>
 #include <LazyGalaxy.h>
+#include <Timer.h>
 
 class LED : public Component {
  public:
-  LED(unsigned char pin);
-  void setLightOn(bool flag);
-  bool isLightOn();
-  void setBlinkOn(bool flag, unsigned int onDelay = 500,
-                  unsigned int offDelay = 500);
-  bool isBlinkOn();
+  LED(Pin* pin);
+  void setLight(bool flag);
+  bool isLight();
+  void setBlink(bool flag, unsigned int onDelay = 500,
+                unsigned int offDelay = 500);
+  bool isBlink();
   void update(unsigned long time);
 
  private:
-  unsigned char _pin;
+  Pin* _pin;
   unsigned int _onDelay = 0;
   unsigned int _offDelay = 0;
 };

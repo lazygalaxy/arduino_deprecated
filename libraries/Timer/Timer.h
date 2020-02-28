@@ -14,16 +14,17 @@ typedef void (*funcPtr)(void);
 
 class Timer {
  public:
+  // TODO: underdtand this actuall only is executed once
   static Timer* getInstance() {
     static Timer* instance = new Timer();
     return instance;
   }
+
   void schedule(unsigned long triggerTime, funcPtr callback);
   void schedule(unsigned long triggerTime, Component* component);
   void update(unsigned long time);
 
  private:
-  Timer();
   struct TimerTask {
     TimerTask(unsigned long triggerTime, funcPtr callback) {
       this->triggerTime = triggerTime;
@@ -45,7 +46,9 @@ class Timer {
     TimerTask* next;
   };
 
+  Timer();
   void addTask(TimerTask* task);
+
   TimerTask* head = NULL;
   TimerTask* tail = NULL;
 };

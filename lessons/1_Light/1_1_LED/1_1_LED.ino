@@ -5,29 +5,42 @@
  */
 
 #include <LED.h>
+#include <LazyGalaxy.h>
 
-LED led1(3);
-LED led2(5);
+LED led1(P_D3);
+LED led2(P_D7);
+LED led3(P_A3);
 
 void setup() {
   Serial.begin(9600);
-  led1.setLightOn(true);
-  led2.setBlinkOn(true);
-  scheduleTask(3000, swap);
-  scheduleTask(6000, stop);
+  scheduleTask(0, lightOn);
+  scheduleTask(2000, lightOff);
+  scheduleTask(4000, blinkOn);
+  scheduleTask(7000, blinkOff);
 }
 
 void loop() { update(); }
 
-void swap() {
-  stop();
-  led1.setBlinkOn(true);
-  led2.setLightOn(true);
+void blinkOn() {
+  led1.setBlink(true);
+  led2.setBlink(true);
+  led3.setBlink(true);
 }
 
-void stop() {
-  led1.setLightOn(false);
-  led1.setBlinkOn(false);
-  led2.setLightOn(false);
-  led2.setBlinkOn(false);
+void blinkOff() {
+  led1.setBlink(false);
+  led2.setBlink(false);
+  led3.setBlink(false);
+}
+
+void lightOn() {
+  led1.setLight(true);
+  led2.setLight(true);
+  led3.setLight(true);
+}
+
+void lightOff() {
+  led1.setLight(false);
+  led2.setLight(false);
+  led3.setLight(false);
 }

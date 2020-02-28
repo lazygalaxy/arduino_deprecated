@@ -6,47 +6,65 @@
 
 #include <LED.h>
 
-LED::LED(unsigned char pin) {
+LED::LED(Pin* pin) {
   _pin = pin;
-  pinMode(_pin, OUTPUT);
-  setLightOn(false);
+  if (_pin->isDigital) {
+    pinMode(_pin->number, OUTPUT);
+  } else {
+    pinMode(A3, OUTPUT);
+  }
 }
 
-void LED::setLightOn(bool flag) {
+void LED::setLight(bool flag) {
   if (flag) {
-    digitalWrite(_pin, HIGH);
+    if (_pin->isDigital) {
+      digitalWrite(_pin->number, HIGH);
+    } else {
+      analogWrite(A3, 255);
+    }
   } else {
-    digitalWrite(_pin, LOW);
+    if (_pin->isDigital) {
+      digitalWrite(_pin->number, LOW);
+    } else {
+      analogWrite(A3, 0);
+    }
   };
 }
 
-bool LED::isLightOn() { return digitalRead(_pin) == HIGH; }
+bool LED::isLight() {
+  if (_pin->isDigital) {
+    return digitalRead(_pin->number) == HIGH;
+  } else {
+    return analogRead(A3) > 0;
+  }
+}
 
-void LED::setBlinkOn(bool flag, unsigned int onDelay = 500,
-                     unsigned int offDelay = 500) {
-  if (flag && !isBlinkOn()) {
+void LED::setBlink(bool flag, unsigned int onDelay, unsigned int offDelay) {
+  if (flag && !isBlink()) {
     // we would like to start the blink
     _onDelay = onDelay;
     _offDelay = offDelay;
     LED::update(millis());
-  } else if (!flag && isBlinkOn()) {
+  } else if (!flag && isBlink()) {
     // we would like to stop the blink
     _onDelay = 0;
     _offDelay = 0;
-    setLightOn(false);
+    setLight(false);
   }
 }
 
-bool LED::isBlinkOn() { return _onDelay > 0 && _offDelay > 0; }
+bool LED::isBlink() { return _onDelay > 0 && _offDelay > 0; }
 
 void LED::update(unsigned long time) {
-  if (isBlinkOn()) {
-    if (isLightOn()) {
-      setLightOn(false);
-      scheduleTask(_offDelay + time, this);
+  if (isBlink()) {
+    if (isLight()) {
+      setLight(false);
+      // TODO: should somehow update existing timer
+      Timer::getInstance()->schedule(_offDelay + time, this);
     } else {
-      setLightOn(true);
-      scheduleTask(_onDelay + time, this);
+      setLight(true);
+      // TODO: should somehow update existing timer
+      Timer::getInstance()->schedule(_onDelay + time, this);
     }
   }
 }

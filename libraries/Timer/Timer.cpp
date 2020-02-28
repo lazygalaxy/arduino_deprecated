@@ -32,7 +32,6 @@ void Timer::update(unsigned long time) {
   TimerTask *current = head;
   TimerTask *previous = NULL;
   while (current != NULL) {
-    Serial.println(String(current->triggerTime) + " " + String(time));
     if (current->triggerTime <= time) {
       if (current->callback != NULL) {
         current->callback();
