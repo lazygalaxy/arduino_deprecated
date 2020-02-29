@@ -52,7 +52,6 @@ bool Timer::unschedule(unsigned long taskId) {
         }
         current = current->next;
       }
-      Serial.println("removing: " + String(temp->id));
       delete temp;
       return true;
     } else {
@@ -67,7 +66,7 @@ void Timer::update(unsigned long time) {
   TimerTask *current = head;
   TimerTask *previous = nullptr;
   while (current != nullptr) {
-    Serial.println("updating: " + String(current->id));
+    bool remove = false;
     if (current->triggerTime <= time) {
       if (current->callback != nullptr) {
         current->callback();
@@ -76,11 +75,7 @@ void Timer::update(unsigned long time) {
       }
 
       if (current->repeatDelay > 0) {
-        Serial.println("renewing: " + String(current->id) + " " +
-                       String(current->repeatDelay));
         current->triggerTime = time + current->repeatDelay;
-        previous = current;
-        current = current->next;
       } else {
         TimerTask *temp = current;
         if (previous == nullptr) {
@@ -96,31 +91,13 @@ void Timer::update(unsigned long time) {
           }
           current = current->next;
         }
-        Serial.println("removing: " + String(temp->id));
         delete temp;
+        remove = true;
       }
-    } else {
+    }
+    if (!remove) {
       previous = current;
       current = current->next;
     }
   }
-}
-
-void Timer::removeTask(TimerTask *current, TimerTask *previous) {
-  TimerTask *temp = current;
-  if (previous == nullptr) {
-    head = head->next;
-    if (head == nullptr) {
-      tail = nullptr;
-    }
-    current = current->next;
-  } else {
-    previous->next = current->next;
-    if (current->next == nullptr) {
-      tail = current;
-    }
-    current = current->next;
-  }
-  Serial.println("removing: " + String(temp->id));
-  delete temp;
 }

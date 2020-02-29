@@ -59,7 +59,6 @@ class Timer {
 
   Timer();
   void addTask(TimerTask* task);
-  void removeTask(TimerTask* current, TimerTask* previous);
 
   TimerTask* head = nullptr;
   TimerTask* tail = nullptr;
