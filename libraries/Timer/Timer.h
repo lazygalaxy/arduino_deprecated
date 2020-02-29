@@ -7,40 +7,51 @@
 #ifndef Timer_h
 #define Timer_h
 
-#include <Arduino.h>
 #include <Component.h>
 
 typedef void (*funcPtr)(void);
 
+static unsigned long idCounter = 0;
+
 class Timer {
  public:
-  // TODO: underdtand this actuall only is executed once
   static Timer* getInstance() {
     static Timer* instance = new Timer();
     return instance;
   }
 
-  void schedule(unsigned long triggerTime, funcPtr callback);
-  void schedule(unsigned long triggerTime, Component* component);
+  unsigned long schedule(unsigned long triggerTime, funcPtr callback,
+                         unsigned int repeatDelay);
+  unsigned long schedule(unsigned long triggerTime, Component* component,
+                         unsigned int repeatDelay);
+  bool unschedule(unsigned long taskId);
   void update(unsigned long time);
 
  private:
   struct TimerTask {
-    TimerTask(unsigned long triggerTime, funcPtr callback) {
+    TimerTask(unsigned long triggerTime, funcPtr callback,
+              unsigned int repeatDelay) {
+      this->id = ++idCounter;
       this->triggerTime = triggerTime;
       this->callback = callback;
-      this->component = NULL;
-      this->next = NULL;
+      this->component = nullptr;
+      this->repeatDelay = repeatDelay;
+      this->next = nullptr;
     }
 
-    TimerTask(unsigned long triggerTime, Component* component) {
+    TimerTask(unsigned long triggerTime, Component* component,
+              unsigned int repeatDelay) {
+      this->id = ++idCounter;
       this->triggerTime = triggerTime;
-      this->callback = NULL;
+      this->callback = nullptr;
       this->component = component;
-      this->next = NULL;
+      this->repeatDelay = repeatDelay;
+      this->next = nullptr;
     }
 
+    unsigned long id;
     unsigned long triggerTime;
+    unsigned int repeatDelay;
     funcPtr callback;
     Component* component;
     TimerTask* next;
@@ -48,9 +59,10 @@ class Timer {
 
   Timer();
   void addTask(TimerTask* task);
+  void removeTask(TimerTask* current, TimerTask* previous);
 
-  TimerTask* head = NULL;
-  TimerTask* tail = NULL;
+  TimerTask* head = nullptr;
+  TimerTask* tail = nullptr;
 };
 
 #endif

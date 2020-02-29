@@ -7,16 +7,16 @@
 #include <LED.h>
 #include <LazyGalaxy.h>
 
-LED led1(P_D3);
-LED led2(P_D7);
-LED led3(P_A3);
+LED led1(D3);
+LED led2(D7);
+LED led3(A3);
 
 void setup() {
   Serial.begin(9600);
   scheduleTask(0, lightOn);
-  scheduleTask(2000, lightOff);
-  scheduleTask(4000, blinkOn);
-  scheduleTask(7000, blinkOff);
+  scheduleTask(3000, lightOff);
+  scheduleTask(6000, blinkOn);
+  scheduleTask(9000, blinkOff);
 }
 
 void loop() { update(); }
