@@ -9,8 +9,10 @@
 
 #include <Component.h>
 
+// TODO: somehow share this in LazyGalaxy
 typedef void (*funcPtr)(void);
 
+// TODO: needs ot be private static
 static unsigned long idCounter = 0;
 
 class Timer {

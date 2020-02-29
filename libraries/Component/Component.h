@@ -7,6 +7,7 @@
 #ifndef COMPONENT_h
 #define COMPONENT_h
 
+// TODO: maybe share this in LazyGalaxy
 class Component {
  public:
   virtual void update(unsigned long time);

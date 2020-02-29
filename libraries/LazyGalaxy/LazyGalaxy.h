@@ -25,7 +25,7 @@ static const uint8_t D11 = 11;
 static const uint8_t D12 = 12;
 static const uint8_t D13 = 13;
 
-// TODO: somehow shared as it is also used in LED project
+// TODO: somehow share this in LazyGalaxy
 typedef void (*funcPtr)(void);
 
 static void update() { Timer::getInstance()->update(millis()); }

@@ -21,18 +21,6 @@ void setup() {
 
 void loop() { update(); }
 
-void blinkOn() {
-  led1.setBlink(true);
-  led2.setBlink(true);
-  led3.setBlink(true);
-}
-
-void blinkOff() {
-  led1.setBlink(false);
-  led2.setBlink(false);
-  led3.setBlink(false);
-}
-
 void lightOn() {
   led1.setLight(true);
   led2.setLight(true);
@@ -43,4 +31,16 @@ void lightOff() {
   led1.setLight(false);
   led2.setLight(false);
   led3.setLight(false);
+}
+
+void blinkOn() {
+  led1.setBlink(true);
+  led2.setBlink(true);
+  led3.setBlink(true);
+}
+
+void blinkOff() {
+  led1.setBlink(false);
+  led2.setBlink(false);
+  led3.setBlink(false);
 }
